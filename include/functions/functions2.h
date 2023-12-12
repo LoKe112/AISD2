@@ -1,5 +1,4 @@
-
-#define INCLUDE_LINKED_LIST_CPP
+#pragma once
 #include <time.h>
 #include <random>
 #include <stdexcept>
@@ -7,12 +6,70 @@
 using namespace std;
 
 namespace linked_list {
-template <typename T>
-struct Node {
-    T data;          // данные узла
-    Node<T>* prev;   // указатель на предыдущий узел
-    Node<T>* next;   // указатель на следующий узел
-};
+
+
+    
+    template <typename T>
+    class LinkedList;
+    template <typename T>
+    class Node {
+        friend LinkedList<T>;
+        Node<T>* prev_;
+        Node<T>* next_;
+        T value_;
+
+    public:
+        Node();
+        Node(Node<T>* prev, Node* next, T const& value);
+        Node(Node<T>* prev, Node* next);
+        Node(T const& value);
+        Node(Node<T> const& other);
+        ~Node() = default;       
+        T GetValue() const;        
+    };
+
+    template <typename T>
+    Node<T>::Node(T const& value) {
+        this->prev_ = nullptr;
+        this->next_ = nullptr;
+        this->value_ = value;
+    }
+
+    template <typename T>
+    Node<T>::Node() {
+        this->prev_ = nullptr;
+        this->next_ = nullptr;
+        this->value_ = T(0);
+    }
+
+    template <typename T>
+    Node<T>::Node(Node<T>* prev, Node* next, T const& value) {
+        this->prev_ = prev;
+        this->next_ = next;
+        this->value_ = value;
+    }
+
+    template <typename T>
+    Node<T>::Node(Node<T>* prev, Node* next) {
+        this->prev_ = prev;
+        this->next_ = next;
+    }
+
+
+    template <typename T>
+    Node<T>::Node(Node<T> const& other) {
+        this->prev_ = other.prev_;
+        this->next_ = other.next_;
+        this->value_ = other.value_;
+
+    }
+
+    template <typename T>
+    T Node<T>::GetValue() const {
+        return this->value_;
+    }
+
+    
 
 template <typename T>
 class LinkedList {
@@ -73,12 +130,12 @@ LinkedList<T>::LinkedList(int size) {
     Node<T>* ptr = this->head_;
     srand((unsigned int)time(NULL));
     for (int i = 0; i < this->size_ - 1; ++i) {
-        ptr->value_ = rand() % 2;
+        ptr->value_ = rand() % 10;
         ptr->next_ = new Node<T>;
         ptr->next_->prev_ = ptr;
         ptr = ptr->next_;
     }
-    ptr->value_ = rand() % 2;
+    ptr->value_ = rand() % 10;
     ptr->next_ = this->head_;
     this->head_->prev_ = ptr;
 }
