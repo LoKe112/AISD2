@@ -25,7 +25,11 @@ namespace linked_list {
         Node(T const& value);
         Node(Node<T> const& other);
         ~Node() = default;       
-        T GetValue() const;        
+        T GetValue() const;   
+        Node<T>* GetPrev() const;
+        Node<T>* GetNext() const;
+        void SetPrev(Node <T>*);
+        void SetNext(Node <T>*);
     };
 
     template <typename T>
@@ -69,7 +73,27 @@ namespace linked_list {
         return this->value_;
     }
 
-    
+    template <typename T>
+    Node<T>* Node<T>::GetNext() const {
+        return this->next_;
+    }
+
+    template <typename T>
+    Node<T>* Node<T>::GetPrev() const {
+        return this->prev_;
+    }
+
+    template<typename T>
+    void Node<T>::SetPrev(Node<T>* other)
+    {
+        this->prev_ = other;
+    }
+
+    template<typename T>
+    void Node<T>::SetNext(Node<T>* other)
+    {
+        this->next_ = other;
+    }
 
 template <typename T>
 class LinkedList {
@@ -95,6 +119,7 @@ public:
     Node<T>& operator[](int index);
     Node<T> operator[](int index) const;
     Node<T>* GetHead() const;
+    void SetHead(Node<T>* other);
 };
 
 template <typename T>
@@ -311,6 +336,22 @@ Node<T>* LinkedList<T>::GetHead() const {
     return this->head_;
 }
 
+template <class T>
+void LinkedList<T>::SetHead(Node<T>* other) {
+    this->head_ = other;
+}
+
+template <class T>
+void ReverseLinkedList(LinkedList<T>& list) {
+    Node<T>* ptr = list.GetHead();
+    for (int i=0; i < list.GetSize(); i++) {
+        Node<T>* temp = ptr->GetPrev();
+        ptr->SetPrev(ptr->GetNext());
+        ptr->SetNext(temp);
+        ptr = ptr->GetPrev();
+    }
+    list.SetHead(ptr->GetNext());
+}
 }
 
 

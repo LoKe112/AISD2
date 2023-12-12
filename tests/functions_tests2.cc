@@ -36,8 +36,11 @@ int main() {
     LinkedList<int> c = LinkedList<int>(3);
     a.PushTail(c);
     PrintList(a);
-    a.PushHead(c);
+    
+    ReverseLinkedList(a);
     PrintList(a);
+
+
 
     return 0;
 }
